@@ -225,7 +225,7 @@ class MemoryCache(Cache):
 
         header_values = [request.headers.get(h, '')
                          for h in uricache.selecting_headers]
-        variant = uricache.wait(key=tuple(sorted(header_values)),
+        variant = uricache.wait(key=tuple([request.method] + sorted(header_values)),
                                 timeout=self.antistampede_timeout,
                                 debug=self.debug)
         if variant is not None:
@@ -258,7 +258,7 @@ class MemoryCache(Cache):
                 # add to the cache
                 header_values = [request.headers.get(h, '')
                                  for h in uricache.selecting_headers]
-                uricache[tuple(sorted(header_values))] = variant
+                uricache[tuple([request.method] + sorted(header_values))] = variant
                 self.tot_puts += 1
                 self.cursize = total_size
 
